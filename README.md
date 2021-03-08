@@ -88,3 +88,51 @@ import { Auth } from 'aws-amplify';
     } catch(error){
       console.log(error);
     }
+
+# #########################################################
+# Forgot password: Add the following code to the form handler  (check Auth/ForgetPassword.js for reference)
+
+import { Auth } from 'aws-amplify';
+
+  try {
+      await Auth.forgotPassword(this.state.email);
+      this.props.history.push('/forgotpasswordverification');
+    } catch(error){
+      console.log(error);
+    }
+
+# ###########################################################
+# Set new password: Add the following code to setup new password (check Auth/ForgotPasswordVerification.js for reference)
+
+import { Auth } from 'aws-amplify';
+
+try{
+      await Auth.forgotPasswordSubmit(
+        this.state.email,
+        this.state.verificationcode,
+        this.state.newpassword
+      )
+      this.props.history.push("/changepasswordconfirmation");
+
+    }catch(error){
+        console.log(error);
+    }
+
+# ##############################################################
+# Change password: Add the following code if user wants to chane password. Check Auth/ChangePassword.js for reference)
+
+
+import { Auth } from 'aws-amplify';
+
+try {
+      const user = await Auth.currentAuthenticatedUser();
+      console.log(user);
+      await Auth.changePassword(
+        user,
+        this.state.oldpassword,
+        this.state.newpassword
+      );
+      this.props.history.push("/changepasswordconfirmation");
+    }catch(error){
+      console.log(error);
+    }
